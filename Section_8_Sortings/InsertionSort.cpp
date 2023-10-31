@@ -4,7 +4,29 @@ using namespace std;
 
 void Insertion(vector<int>&arr)
 {
-    
+    for(int i =1 ; i < arr.size(); i++)
+    {   int t = arr[i];
+        bool isplaced = false;
+        for(int j = i-1 ; j>= 0; j--)
+        {
+            if(arr[j] > t)
+            {
+                arr[j+1] = arr[j];
+            }
+
+            else
+            {
+                arr[j+1] = t;
+                isplaced = true;
+                break;
+            }
+        }
+
+        if(!isplaced)
+        {
+            arr[0] = t;
+        }
+    }
 }
 
 
