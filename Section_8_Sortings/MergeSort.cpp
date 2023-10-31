@@ -44,7 +44,7 @@ void Merge(vector<int> & arr , int l , int m , int h)
 void MergeSort(vector<int> &arr , int l ,int h)
 {
     if(l<h)
-    {  
+    {   
         int m = (l+h)/2;
         MergeSort(arr, l , m);
         MergeSort(arr, m+1 , h);
