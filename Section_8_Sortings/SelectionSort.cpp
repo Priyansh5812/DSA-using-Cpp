@@ -4,18 +4,31 @@ using namespace std;
 
 void Selection(vector<int>& arr)
 {
-    for(int i = 0; i < arr.size(); i++)
-    {    
-        int min = i;
-        for(int j = i; j < arr.size(); j++)
+    // for(int i = 0; i < arr.size(); i++)
+    // {    
+    //     int min = i;
+    //     for(int j = i; j < arr.size(); j++)
+    //     {
+    //         if(arr[min] > arr[j])
+    //         {
+    //             min = j;
+    //         }
+    //     }
+    //     swap(arr[min] , arr[i]);
+    // }
+
+    for(int i =0 ;i < arr.size(); i++)
+    {   int max_ind = 0;
+        for(int j = 0; j < arr.size()-i; j++)
         {
-            if(arr[min] > arr[j])
-            {
-                min = j;
-            }
+                if(arr[max_ind] < arr[j])
+                {
+                    max_ind = j;
+                }
         }
-        swap(arr[min] , arr[i]);
+        swap(arr[max_ind] , arr[arr.size()-1-i]);
     }
+
 }
 
 int main()
