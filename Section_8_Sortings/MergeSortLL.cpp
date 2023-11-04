@@ -110,14 +110,26 @@ Node* Merge(Node* head1 , Node*head2)
 Node*FindMid(Node * head)
 {
     Node* ptr1 = head;
-    Node * ptr2 = head -> next;
-
-    while(ptr2 && ptr2->next)
+    Node * ptr2 = head;
+    while(ptr2 && ptr2 -> next)
     {
-        ptr1 = ptr1->next;
-        ptr2 = ptr2->next->next;
+        ptr2 = ptr2 -> next;
+        if(ptr2 -> next)
+        {
+            ptr2 = ptr2 -> next;
+        }
+        else
+        {
+            break;
+        }
+
+        ptr1= ptr1 -> next;
+
     }
+
     return ptr1;
+
+
 
 }
 
@@ -135,7 +147,6 @@ Node* MergeSort(Node*& head)
     MergeSort(ptr1);
     MergeSort(ptr2);
     head = Merge(ptr1 , ptr2);
-    Display(head); cout << endl;
     return head;
     
 }
