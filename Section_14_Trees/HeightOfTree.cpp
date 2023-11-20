@@ -109,6 +109,16 @@ int height(Node* root)
 }
 
 
+int getHeight(Node* root , int c = 0)
+{
+    if(!root)
+    {
+        return c;
+    }
+
+    return std :: max(getHeight(root -> left , c+1) , getHeight(root -> right , c+1));
+
+}
 
 
 int main()
@@ -116,6 +126,6 @@ int main()
     Node* root = new Node();
     cout << "Enter the value of the root node" << endl;
     BuildTree(root);
-    cout << height(root) << endl;
+    cout << getHeight(root , 0) << endl;
     return 0;
 }

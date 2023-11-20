@@ -9,8 +9,6 @@ void LevelOrderTraversal_Beautiful(Node* root)
     queue <Node*> q;
     if(!root)
         return;
-
-        
     q.push(root);
     q.push(NULL);
     while(!q.empty())
@@ -47,9 +45,6 @@ void LevelOrderTraversal_Beautiful(Node* root)
             
         }
         }
-
-        
-
     }
 }
 
@@ -85,28 +80,56 @@ void PreOrderTranversal_Rec(Node* root)
 
 void PreOrderTraversal_Itr(Node* root)
 {
-    Node* p = root;
-    stack<Node*> st;
-
-    while(p)
+    if(!root)
     {
-        cout << p ->data << " ";
-        if(p->right)
-            st.push(p->right);
-        if(p->left)
-            p = p -> left;
-        else if(!st.empty())
-        { 
-            
-            p = st.top();
-            st.pop();
-        }
-        else
-        {
-            p = NULL;
-        }
-               
+        return;
     }
+    stack<Node*> st;
+    st.push(root);
+    while(!st.empty())
+    {
+        Node* ptr = st.top();
+        st.pop();
+
+        cout << ptr -> data << " ";
+
+        if(ptr -> right)
+        {
+            st.push(ptr -> right);
+        }
+
+        if(ptr -> left)
+        {
+            st.push(ptr -> left);
+        }
+
+    }
+}
+
+
+void InOrderTraversal_Itr(Node* root)
+{
+    if(!root)
+    {
+            return;
+    }
+
+    stack<Node*> st;
+    Node* ptr = root;
+    while(!st.empty() || ptr)
+    {
+            
+        {
+            st.push(ptr);
+            ptr = ptr -> left;
+        }
+
+        ptr = st.top();
+        st.pop();
+        cout << ptr -> data << " ";
+        ptr = ptr -> right;
+    }
+
 }
 
 void InOrderTraversal(Node * root)
@@ -138,12 +161,12 @@ int main()
     BuildTree(root);
     //LevelOrderTraversal_Beautiful(root);
     cout << endl;
-    cout << "Preorder : " << endl;
-    PreOrderTraversal_Itr(root);
-    cout << endl << "InOrder : " << endl;
-    InOrderTraversal(root);
-    cout << endl << "PostOrder : " << endl;
-    PostOrderTraversal(root);
+    cout << "Inorder : " << endl;
+    InOrderTraversal_Itr(root);
+    // cout << endl << "InOrder : " << endl;
+    // InOrderTraversal(root);
+    // cout << endl << "PostOrder : " << endl;
+    // PostOrderTraversal(root);
     
     return 0;
 }
