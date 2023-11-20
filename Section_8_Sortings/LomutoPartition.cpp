@@ -9,7 +9,8 @@ void LomutoPartition(vector<int>& arr)
     while(j < arr.size())
     {
         if(arr[j] <= arr[arr.size()-1])
-        {   i++;
+        {   
+            i++;
             swap(arr[i] , arr[j]);
         }
         j++;
