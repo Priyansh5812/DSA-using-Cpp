@@ -16,7 +16,7 @@ int Borrows(string& a , string& b)
     int j = b.size()-1;
     while(i != -1)
     {
-        if(a[i] < b[j]) // no borrow required
+        if(a[i] < b[j])
         {
             a[i-1] = (char) (stoi(to_string(a[i-1]))-1);
             c++;
