@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 using namespace std;
+
 /*
 Search for element
 if found, no need of Insertion.
@@ -27,16 +28,15 @@ class Node
 };
 
 
-Node* BuildTree(Node* &root)
+void BuildTree(Node* root)
 {
-    if(!root)
-    {
-        root = new Node();
-        cout << "Enter the value of root node" << endl;
-        cin >> root->data;
+    if(root -> data == -1)
+    {   
+        cout << "Enter the data for the root Node" << endl;
+        cin >> root ->data ;
     }
 
-
+    
     int t;
     cout << "Enter the value of left Node of " << root -> data << endl;
     cin >> t;
@@ -56,7 +56,7 @@ Node* BuildTree(Node* &root)
         BuildTree(root -> right);
     }
 
-    return root;
+   
 
 }
 void LevelOrderTraversal_Beautiful(Node* root)
@@ -176,16 +176,10 @@ void Insert_Rec(Node* head , Node* t , int x)
 
 int main()
 {   
-    Node * root = NULL;
+    Node * root = new Node(-1);
     BuildTree(root);
     LevelOrderTraversal_Beautiful(root);
     cout << endl;
-    int data;
-    cout << "Enter the value to be inserted" << endl;
-    cin >> data;
-    Insert_Rec(root ,nullptr, data);
-    cout << endl;
-    LevelOrderTraversal_Beautiful(root);
-    return 0;
+    
     //30 15 10 -1 -1 20 -1 -1 50 40 -1 -1 60 -1 -1
 }
