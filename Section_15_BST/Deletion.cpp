@@ -2,158 +2,202 @@
 #include <queue>
 using namespace std;
 
+
+
 class Node
 {
     public:
         int data;
         Node* left , *right;
-        Node(int x) : data(x)  , left(NULL) , right(NULL)
+
+        Node() : data(-1) , left(NULL) , right(NULL)
+        {}
+        Node(int x) : data(x) , left(NULL) , right(NULL)
+        {}
+        Node(int x, Node* left) : data(x) , left(left) , right(NULL)
+        {}
+
+        Node(int x , Node* left , Node* right) : data(x) , left(left) , right(right)
         {}
 };
 
 struct SearchData
 {
-    Node* t_ptr , *ptr;
+    Node* curr , *prev;
+    SearchData() : curr(NULL) , prev(NULL)
+    {}
+    SearchData(Node*trail , Node* target) : curr(target) , prev(trail)
+    {}
 };
 
-void BuildTree(Node* root)
+
+
+Node* BuildTree(Node* &root)
 {
-    if(root->data == -1)
+    if(root == NULL)
     {
-        cout << "Enter the data for the root Node" << endl;
-        cin >> root -> data ;
+        root = new Node();
+        cout << "Enter the value of the root Node " << endl;
+        cin >> root -> data;
     }
 
-    int t;
-    cout << "Enter the data for the left node of " << root -> data << endl;
-    cin >> t;
-    if(t != -1)
+    int d;
+    cout << "Enter the value of the left Node of " << root -> data << endl;
+    cin >> d;
+
+    if(d != -1)
     {
-        root ->left = new Node(t);
-        BuildTree(root ->left);
+        root -> left = new Node(d);
+        BuildTree(root -> left);
     }
 
-    cout << "Enter the data for the right Node of " << root -> data << endl;
-    cin >> t;
-    if(t != -1)
+    cout << "Enter the value of the right Node of " << root -> data << endl;
+    cin >> d;
+    if(d != -1)
     {
-        root ->right =  new Node(t);
+        root -> right = new Node(d);
         BuildTree(root -> right);
     }
+    return root;
+
 }
 
-void LevelOrderTraversal(Node* root)
-{
+
+void LevelOrderTraversal(Node*& root)
+{   
     queue<Node*> q;
     q.push(root);
     q.push(NULL);
 
     while(!q.empty())
     {
-        Node* ptr = q.front();
+        Node * ptr = q.front();
         q.pop();
+
         if(ptr == NULL)
-        {   cout << endl;
+        {   
+            cout << endl;
             if(!q.empty())
             {
                 q.push(NULL);
             }
-
         }
         else
-        {
-            cout << ptr-> data << " ";
-            if(ptr -> left)
-            {
-                q.push(ptr -> left);
-            }
-
-            if(ptr -> right)
-            {   
-                q.push(ptr -> right);
-            }
-
-        }
-
-    }
-
-
-}
-
-
-SearchData SearchTree(Node* root , int Target)
-{   
-    Node* t_ptr = nullptr;
-    Node* ptr = root;
-    while(ptr && ptr -> data != Target)
-    {   
-        if(ptr -> data < Target)
         {   
-            t_ptr = ptr;  
-            ptr = ptr -> right;
-        }
-        else if(ptr -> data > Target)
-        {   t_ptr = ptr;
-            ptr = ptr -> left;
-        }
-        else
-        {
-            return {t_ptr , ptr};
+            cout << ptr -> data << " ";
+            if(ptr -> left != NULL)
+                {q.push(ptr->left);}
+            if(ptr -> right != NULL)
+                {q.push(ptr -> right);}
         }
     }
-    return {t_ptr , ptr};
+
 
 }
 
-SearchData GetInorderSucc(Node* root)
-{
 
-}
-
-SearchData GetInorderPred(Node* root)
-{
-
-}
-
-void DeleteNode(Node* root , int Target)
-{
-    SearchData Sdata = SearchTree(root , Target);
-    if(Sdata.ptr  == nullptr)
-    {   cout << "Node not found for deletion" << endl;
-        return;
+bool SearchInBST(Node*& root , int x)
+{   
+    if(root == NULL)
+    {
+        return false;
+    }
+    else if(root -> data == x)
+    {
+        return true;
+    }
+    else if(root -> data < x)
+    {
+        return SearchInBST(root -> right , x);
     }
     else
-    {   
-        SearchData newNodes;
-        if(Sdata.ptr->left)
-        {
-            newNodes = GetInorderPred(Sdata.ptr);
-            newNodes.t_ptr->right = NULL;
-
-
-        }
-        else if(Sdata.ptr ->right)
-        {
-            newNodes = GetInorderSucc(Sdata.ptr);
-            newNodes.t_ptr->left = NULL;
-        }
-
-
-        
-
-        free(Sdata.ptr);
+    {
+        return SearchInBST(root -> left , x);
     }
 
 }
+Node* InOrderSucessor(Node* root)
+{
+    Node* ptr = root->right;
+    while(ptr -> left)
+    {
+        ptr = ptr -> left;
+    }
+    return ptr;
+
+}
+
+
+
+
+
+Node* Deletion(Node*& root , int x)
+{   
+    if(root == NULL)
+    {
+        return root;
+    }
+
+    if(root -> data == x)
+    {
+        // 3 cases will be required
+        // 0 children
+        if(root -> left == NULL && root -> right == NULL)
+        {
+            free(root);
+            return nullptr;
+        }
+        //1 child
+        else if(root -> left == NULL && root -> right != NULL)
+        {
+            Node* temp = root -> right;
+            free(root);
+            return temp;
+        }
+        else if(root -> left != NULL && root -> right == NULL)
+        {
+            Node* temp = root -> left;
+            free(root);
+            return temp;
+        }
+        // 2 children
+        else
+        {
+            Node* ptr = InOrderSucessor(root);
+            root->data = ptr -> data;
+            root->right = Deletion(root->right , ptr->data);
+            return root;
+        }
+    }
+
+    else if(root -> data < x) // go to the right
+    {
+        root -> right = Deletion(root -> right , x);
+        return root;
+    }
+    else // go to the left
+    {
+        root -> left = Deletion(root -> left , x);
+        return root;
+    }
+}
+
 
 int main()
-{
-    Node* root = new Node(-1);
-    BuildTree(root);
-    cout << endl;
+{   
+    Node* root = NULL;
+    root = BuildTree(root);
     LevelOrderTraversal(root);
     cout << endl;
-    DeleteNode(root , 20);
+    if(SearchInBST(root , 15))
+    {
+        Deletion(root , 15);
+    }
+    else 
+    {
+        std :: cout << "Node not present" << std :: endl;
+    }
+
     LevelOrderTraversal(root);
     return 0;
 }
